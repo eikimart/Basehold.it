@@ -4,11 +4,13 @@
  * @author Michael Wright	@MichaelW90
  */
 
-// Height settings
 $settings = array(
-	'colour' => array(0, 0, 0),
-	'currentHeight' => 10, 	// default to 10px height
-	'minHeight' => 1		// ensure baseline is bigger than 1px
+	'colour'      => array(0, 0, 0),
+        'columnWidth' => 60,    // defaults are taken from 960.gs
+        'gutterWidth' => 20,
+        'columnNum'   => 12,
+	'minColumnWidth' => 1,	// total width of column must be at least 1
+	'minColumnWidth' => 0	// total width of gutter must be at least 0
 );
 $store = array();
 
@@ -59,9 +61,14 @@ if(isset($_GET['hex'])){
 	$colour = $settings['colour'];
 }
 
-// Default to 10 px height if they set no height.
-$settings['currentHeight'] = (isset($_GET['height']) && $_GET['height'] > $settings['minHeight']? $_GET['height'] : $settings['currentHeight']);
+// Default if they set no width.
+$settings['columnWidth'] = (isset($_GET['columnWidth']) && $_GET['columnWidth'] > $settings['minColumnWidth'] ? $_GET['columnWidth'] : $settings['columnWidth']);
 
+$settings['gutterWidth'] = (isset($_GET['gutterWidth']) && $_GET['gutterWidth'] > $settings['minGutterWidth'] ? $_GET['gutterWidth'] : $settings['gutterWidth']);
+
+
+
+/*
 // Store Height
 $store['height'] = $settings['currentHeight'];
 
@@ -72,15 +79,16 @@ if(!include_once('./Stats.class.php'))
 $stats = new Stats();
 // Store the stats!
 $stats -> store($store);
+*/
 
 // Set the content-type to png
 header("Content-type: image/png"); 
 
 // Create an image at the right dimensions.
-$im = imagecreate(4, $settings['currentHeight']);
+$im = imagecreate($settings['columnWidth']+$settings['gutterWidth'], 1);
 
 // Declare some colours
-$white = imagecolorallocate($im, 255, 255, 255);  
+$white = imagecolorallocate($im, 255, 255, 255);
 if (count($colour) == 4) {
 	$line = imagecolorallocatealpha($im, $colour[0], $colour[1], $colour[2], 127-$colour[3]*127);
 } else {
@@ -91,7 +99,7 @@ if (count($colour) == 4) {
 imagecolortransparent($im, $white);
 
 // Draw a line starting bottom left, for 2px along
-imageline($im, 0, $settings['currentHeight']-1, 2, $settings['currentHeight']-1, $line);
+imageline($im, 0, 0, $settings['columnWidth']-1, 0, $line);
 
 // Output the image as a png
 imagepng($im);
