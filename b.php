@@ -6,13 +6,19 @@
  */
 
 // Check if GET h is set as it is required.
-if (!isset($_GET['height'])) {
-	die('/* A height parameter is required. */');
+if (!isset($_GET['columnWidth']) || !isset($_GET['gutterWidth'])) {
+	die('/* Column and gutter width parameters are required. */');
 }
 
 $queryString = array();
 foreach ($_GET as $key => $value) {
 	$queryString[] = $key . '=' . $value;
+}
+
+$totalWidth = 0;
+if (isset($_GET['columnNum']) && $_GET['columnNum'] > 0) {
+        $gutterWidth = $_GET['gutterWidth'];
+        $totalWidth = $_GET['columnNum'] * ($_GET['columnWidth'] + $gutterWidth) + $gutterWidth;
 }
 
 // Set the content-type to css
@@ -24,7 +30,17 @@ body {
 
 body:after {
 	position: absolute;
-	width: auto;
+<?php 
+if($totalWidth) {
+        echo "        width: $totalWidth"."px;\n";
+        echo "        background: url(/image.php?".implode('&', $queryString).") repeat ".$gutterWidth."px 0;\n";
+}
+else {
+        echo "        width: auto;\n";
+        echo "        background: url(/image.php?".implode('&', $queryString).") repeat top left;\n";
+}
+?>
+        margin-left: auto; margin-right: auto;
 	height: auto;
 	z-index: 9999;
 	content: '';
@@ -34,7 +50,6 @@ body:after {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background: url(/image.php?<?php echo implode('&', $queryString); ?>) repeat top left;
 }
 
 body:active:after {

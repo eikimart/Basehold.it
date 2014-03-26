@@ -8,9 +8,8 @@ $settings = array(
 	'colour'      => array(0, 0, 0),
         'columnWidth' => 60,    // defaults are taken from 960.gs
         'gutterWidth' => 20,
-        'columnNum'   => 12,
 	'minColumnWidth' => 1,	// total width of column must be at least 1
-	'minColumnWidth' => 0	// total width of gutter must be at least 0
+	'minGutterWidth' => 0	// total width of gutter must be at least 0
 );
 $store = array();
 
