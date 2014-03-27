@@ -18,22 +18,22 @@ foreach ($_GET as $key => $value) {
 $totalWidth = 0;
 if (isset($_GET['columnNum']) && $_GET['columnNum'] > 0) {
         $gutterWidth = $_GET['gutterWidth'];
-        $totalWidth = $_GET['columnNum'] * ($_GET['columnWidth'] + $gutterWidth) + $gutterWidth;
+        $totalWidth = $_GET['columnNum'] * ($_GET['columnWidth'] + $gutterWidth);
 }
 
 // Set the content-type to css
 header("Content-type: text/css");
 ?>
-body {
+html {
 	position: relative;
 }
 
-body:after {
+html:after {
 	position: absolute;
 <?php 
 if($totalWidth) {
         echo "        width: $totalWidth"."px;\n";
-        echo "        background: url(/image.php?".implode('&', $queryString).") repeat ".$gutterWidth."px 0;\n";
+        echo "        background: url(/image.php?".implode('&', $queryString).") repeat top left;\n";
 }
 else {
         echo "        width: auto;\n";
@@ -52,6 +52,6 @@ else {
 	left: 0;
 }
 
-body:active:after {
+html:active:after {
 	display: none;
 }

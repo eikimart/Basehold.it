@@ -98,7 +98,7 @@ if (count($colour) == 4) {
 imagecolortransparent($im, $white);
 
 // Draw a line starting bottom left, for 2px along
-imageline($im, 0, 0, $settings['columnWidth']-1, 0, $line);
+imageline($im, $settings['gutterWidth']/2, 0, $settings['columnWidth']+($settings['gutterWidth']/2)-1, 0, $line);
 
 // Output the image as a png
 imagepng($im);
